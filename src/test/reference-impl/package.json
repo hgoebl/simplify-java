@@ -1,0 +1,13 @@
+{
+  "name": "simplify-java-testdata",
+  "version": "0.0.0",
+  "description": "Generates reference data from simplify-js to be used by simplify-java for test purposes",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Heinrich Göbl <hgoebl@goebl.com> (http://goebl.com/)",
+  "license": "MIT"
+}
