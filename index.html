@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Simplify-java : Simplification of a 2D-polyline or a 3D-polyline" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Simplify-java</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/hgoebl/simplify-java">View on GitHub</a>
+
+          <h1 id="project_title">Simplify-java</h1>
+          <h2 id="project_tagline">Simplification of a 2D-polyline or a 3D-polyline</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/hgoebl/simplify-java/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/hgoebl/simplify-java/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="simplify-java" class="anchor" href="#simplify-java"><span class="octicon octicon-link"></span></a>simplify-java</h1>
+
+<p>Simplification of a 2D-polyline or a 3D-polyline.</p>
+
+<ul>
+<li>Uses Radial-Distance algorithm (fast) or Douglas-Peucker (high quality) algorithm</li>
+<li>Port of <a href="https://github.com/mourner/simplify-js">mourner / simplify-js</a>, a High-performance JavaScript 2D/3D
+polyline simplification library by Vladimir Agafonkin</li>
+<li>Can handle arbitrary objects carrying coordinates (2D, 3D)
+
+<ul>
+<li>either by implementing an interface</li>
+<li>or by providing a helper extracting the coordinates</li>
+</ul>
+</li>
+<li>Leaves the objects untouched, just creates a new array referencing the simplified points</li>
+<li>requires Java 5</li>
+<li>Maven Build</li>
+<li>JUnit-tested
+
+<ul>
+<li>94% lines covered</li>
+<li>reference data is created by "original" JavaScript implementation (Version 1.1.0)</li>
+</ul>
+</li>
+</ul><h1>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h1>
+
+<div class="highlight highlight-java"><pre>    <span class="c1">// create an instance of the simplifier (empty array needed by List.toArray)</span>
+    <span class="n">Simplify</span><span class="o">&lt;</span><span class="n">Point</span><span class="o">&gt;</span> <span class="n">simplify</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Simplify</span><span class="o">&lt;</span><span class="n">Point</span><span class="o">&gt;(</span><span class="k">new</span> <span class="n">MyPoint</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+
+    <span class="c1">// here we have an array with hundreds of points</span>
+    <span class="n">Point</span><span class="o">[]</span> <span class="n">allPoints</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="kt">double</span> <span class="n">tolerance</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="kt">boolean</span> <span class="n">highQuality</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// Douglas-Peucker, false for Radial-Distance</span>
+
+    <span class="c1">// run simplification process</span>
+    <span class="n">Point</span><span class="o">[]</span> <span class="n">lessPoints</span> <span class="o">=</span> <span class="n">simplify</span><span class="o">.</span><span class="na">simplify</span><span class="o">(</span><span class="n">allPoints</span><span class="o">,</span> <span class="n">tolerance</span><span class="o">,</span> <span class="n">highQuality</span><span class="o">);</span>
+</pre></div>
+
+<p>For more examples see src/test/java/**/*Test.</p>
+
+<h1>
+<a name="maven-coordinates" class="anchor" href="#maven-coordinates"><span class="octicon octicon-link"></span></a>Maven Coordinates</h1>
+
+<div class="highlight highlight-xml"><pre><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>com.goebl<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>simplify<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+
+<p>Gradle</p>
+
+<pre><code>'com.goebl:simplify:1.0.0'
+</code></pre>
+
+<p>Not using Maven/Gradle? - Then you can download the plain JAR from following links directly:</p>
+
+<ul>
+<li><a href="https://oss.sonatype.org/content/groups/staging/com/goebl/simplify/">SNAPSHOT Versions</a></li>
+<li><a href="http://repo.maven.apache.org/maven2/com/goebl/simplify/">RELEASE Versions</a></li>
+</ul><h1>
+<a name="licence" class="anchor" href="#licence"><span class="octicon octicon-link"></span></a>Licence</h1>
+
+<ul>
+<li><a href="http://opensource.org/licenses/MIT">The MIT License</a></li>
+</ul><h1>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h1>
+
+<ul>
+<li>publish gh_pages (JavaDoc)</li>
+</ul><h1>
+<a name="alternatives--infos" class="anchor" href="#alternatives--infos"><span class="octicon octicon-link"></span></a>Alternatives / Infos</h1>
+
+<ul>
+<li><a href="http://www.codeproject.com/Articles/114797/Polyline-Simplification">http://www.codeproject.com/Articles/114797/Polyline-Simplification</a></li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Simplify-java maintained by <a href="https://github.com/hgoebl">hgoebl</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
