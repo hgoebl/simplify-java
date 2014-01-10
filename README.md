@@ -32,6 +32,25 @@ Simplification of a 2D-polyline or a 3D-polyline.
 
 For more examples see src/test/java/**/*Test.
 
+# Maven Coordinates
+
+```xml
+<dependency>
+    <groupId>com.goebl</groupId>
+    <artifactId>simplify-java</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+Gradle
+
+    'com.goebl:simplify-java:1.0.0'
+
+Not using Maven/Gradle? - Then you can download the plain JAR from following links directly:
+
+ * [SNAPSHOT Versions](https://oss.sonatype.org/content/groups/staging/com/goebl/simplify-java/)
+ * [RELEASE Versions](http://repo.maven.apache.org/maven2/com/goebl/simplify-java/)
+
 # Licence #
 
   * [The MIT License](http://opensource.org/licenses/MIT)
@@ -39,10 +58,6 @@ For more examples see src/test/java/**/*Test.
 # TODO #
 
   * publish gh_pages (JavaDoc)
-  * Publish to Maven Central
-    * <http://datumedge.blogspot.de/2012/05/publishing-from-github-to-maven-central.html>
-    * <http://maven.apache.org/guides/mini/guide-central-repository-upload.html>
-    * <https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide>
 
 # Alternatives / Infos #
 
