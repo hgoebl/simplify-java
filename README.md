@@ -37,19 +37,19 @@ For more examples see src/test/java/**/*Test.
 ```xml
 <dependency>
     <groupId>com.goebl</groupId>
-    <artifactId>simplify-java</artifactId>
+    <artifactId>simplify</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
 
 Gradle
 
-    'com.goebl:simplify-java:1.0.0'
+    'com.goebl:simplify:1.0.0'
 
 Not using Maven/Gradle? - Then you can download the plain JAR from following links directly:
 
- * [SNAPSHOT Versions](https://oss.sonatype.org/content/groups/staging/com/goebl/simplify-java/)
- * [RELEASE Versions](http://repo.maven.apache.org/maven2/com/goebl/simplify-java/)
+ * [SNAPSHOT Versions](https://oss.sonatype.org/content/groups/staging/com/goebl/simplify/)
+ * [RELEASE Versions](http://repo.maven.apache.org/maven2/com/goebl/simplify/)
 
 # Licence #
 
