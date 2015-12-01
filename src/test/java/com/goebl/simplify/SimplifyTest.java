@@ -94,7 +94,7 @@ public class SimplifyTest {
                 tolerance, highQuality ? "hq" : "sq"));
     }
 
-    private static Point[] readPoints(String fileName) throws Exception {
+    static Point[] readPoints(String fileName) throws Exception {
         List<MyPoint> pointList = new ArrayList<MyPoint>();
         File file = new File("src/test/resources", fileName);
         InputStream is = null;

@@ -30,6 +30,71 @@ Simplification of a 2D-polyline or a 3D-polyline.
     Point[] lessPoints = simplify.simplify(allPoints, tolerance, highQuality);
 ```
 
+**Please note**
+The algorithm squares differences of x, y and z coordinates. If this difference is less than 1,
+the square of it will get even less. In such cases, the tolerance has negative effect.
+
+Solution: multiply your coordinates by a factor so the values are shifted in a way so that taking
+the square of the differences creates greater values.
+
+If your Points don't have the `com.goebl.simplify.Point` interface, you can implement it on your
+Point-Class, or (better w.r.t. separation of concerns) provide an implementation of the
+`PointExtractor` interface.
+ 
+Here is an example (taken from the test cases):
+
+Example for your own point-class, let's assume it's not possible/desirable to
+let it implement com.goebl.simplify.Point interface: 
+
+```java
+public class LatLng {
+    private final double lat;
+    private final double lng;
+
+    public LatLng(double lat, double lng) {
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+}
+```
+
+In the class where you simplify the points, you need a **PointExtractor**. As mentioned above,
+the resulting x and y values are shifted in a space where delta-x and delta-y are no longer very
+small numbers below 1:
+
+```java
+private static PointExtractor<LatLng> latLngPointExtractor = new PointExtractor<LatLng>() {
+    @Override
+    public double getX(LatLng point) {
+        return point.getLat() * 1000000;
+    }
+
+    @Override
+    public double getY(LatLng point) {
+        return point.getLng() * 1000000;
+    }
+};
+```
+
+Simplification now works like this. Using a `PointExtractor` has the positive effect that you get
+an array of your original points, not copies:
+
+```java
+LatLng[] coords = ... // the array of your "original" points
+
+Simplify<LatLng> simplify = new Simplify<LatLng>(new LatLng[0], latLngPointExtractor);
+
+LatLng[] simplified = simplify.simplify(coords, 20f, false);
+```
+
 For more examples see src/test/java/**/*Test.
 
 # Maven Coordinates
@@ -39,6 +104,12 @@ For more examples see src/test/java/**/*Test.
     <groupId>com.goebl</groupId>
     <artifactId>simplify</artifactId>
     <version>1.0.0</version>
+    
+    <!-- or -->
+
+    <groupId>com.goebl</groupId>
+    <artifactId>simplify</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
