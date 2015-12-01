@@ -30,6 +30,10 @@ abstract class AbstractSimplify<T> {
                         double tolerance,
                         boolean highestQuality) {
 
+        if (points == null || points.length <= 2) {
+            return points;
+        }
+
         double sqTolerance = tolerance * tolerance;
 
         if (!highestQuality) {

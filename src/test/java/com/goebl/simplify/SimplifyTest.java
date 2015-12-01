@@ -72,6 +72,19 @@ public class SimplifyTest {
         Assert.assertEquals("array should be simplified", 2, simplified.length);
     }
 
+    @Test
+    public void testInvalidPointsParam() {
+        Simplify<Point> aut = new Simplify<Point>(new MyPoint[0]);
+        Assert.assertNull("return null when point-array is null", aut.simplify(null, 1f, false));
+
+        Point[] only2 = new Point[2];
+        only2[0] = new MyPoint(1, 2);
+        only2[1] = new MyPoint(2, 3);
+
+        Assert.assertTrue("return identical array when less than 3 points",
+                only2 == aut.simplify(only2, 1f, false));
+    }
+
     private void assertPointsEqual(float tolerance, boolean highQuality) throws Exception {
         Point[] pointsExpected = readPoints(tolerance, highQuality);
         long start = System.nanoTime();
