@@ -2,9 +2,9 @@
 <html>
 
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="simplify-java : Simplification of a 2D-polyline or a 3D-polyline" />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="simplify-java : Simplification of a 2D-polyline or a 3D-polyline">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -32,7 +32,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="simplify-java" class="anchor" href="#simplify-java"><span class="octicon octicon-link"></span></a>simplify-java</h1>
+<a id="simplify-java" class="anchor" href="#simplify-java" aria-hidden="true"><span class="octicon octicon-link"></span></a>simplify-java</h1>
 
 <p>Simplification of a 2D-polyline or a 3D-polyline.</p>
 
@@ -57,32 +57,97 @@ polyline simplification library by Vladimir Agafonkin</li>
 <li>reference data is created by "original" JavaScript implementation (Version 1.1.0)</li>
 </ul>
 </li>
-</ul><h1>
-<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h1>
-
-<div class="highlight highlight-java"><pre>    <span class="c1">// create an instance of the simplifier (empty array needed by List.toArray)</span>
-    <span class="n">Simplify</span><span class="o">&lt;</span><span class="n">Point</span><span class="o">&gt;</span> <span class="n">simplify</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Simplify</span><span class="o">&lt;</span><span class="n">Point</span><span class="o">&gt;(</span><span class="k">new</span> <span class="n">MyPoint</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
-
-    <span class="c1">// here we have an array with hundreds of points</span>
-    <span class="n">Point</span><span class="o">[]</span> <span class="n">allPoints</span> <span class="o">=</span> <span class="o">...</span>
-    <span class="kt">double</span> <span class="n">tolerance</span> <span class="o">=</span> <span class="o">...</span>
-    <span class="kt">boolean</span> <span class="n">highQuality</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// Douglas-Peucker, false for Radial-Distance</span>
-
-    <span class="c1">// run simplification process</span>
-    <span class="n">Point</span><span class="o">[]</span> <span class="n">lessPoints</span> <span class="o">=</span> <span class="n">simplify</span><span class="o">.</span><span class="na">simplify</span><span class="o">(</span><span class="n">allPoints</span><span class="o">,</span> <span class="n">tolerance</span><span class="o">,</span> <span class="n">highQuality</span><span class="o">);</span>
-</pre></div>
-
-<p>For more examples see src/test/java/**/*Test.</p>
+</ul>
 
 <h1>
-<a name="maven-coordinates" class="anchor" href="#maven-coordinates"><span class="octicon octicon-link"></span></a>Maven Coordinates</h1>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h1>
 
-<div class="highlight highlight-xml"><pre><span class="nt">&lt;dependency&gt;</span>
-    <span class="nt">&lt;groupId&gt;</span>com.goebl<span class="nt">&lt;/groupId&gt;</span>
-    <span class="nt">&lt;artifactId&gt;</span>simplify<span class="nt">&lt;/artifactId&gt;</span>
-    <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
+<div class="highlight highlight-source-java"><pre>    <span class="pl-c">// create an instance of the simplifier (empty array needed by List.toArray)</span>
+    <span class="pl-k">Simplify&lt;<span class="pl-smi">Point</span>&gt;</span> simplify <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">Simplify&lt;<span class="pl-smi">Point</span>&gt;</span>(<span class="pl-k">new</span> <span class="pl-smi">MyPoint</span>[<span class="pl-c1">0</span>]);
+
+    <span class="pl-c">// here we have an array with hundreds of points</span>
+    <span class="pl-k">Point</span>[] allPoints <span class="pl-k">=</span> <span class="pl-c1">...</span>
+    <span class="pl-k">double</span> tolerance <span class="pl-k">=</span> <span class="pl-c1">...</span>
+    <span class="pl-k">boolean</span> highQuality <span class="pl-k">=</span> <span class="pl-c1">true</span>; <span class="pl-c">// Douglas-Peucker, false for Radial-Distance</span>
+
+    <span class="pl-c">// run simplification process</span>
+    <span class="pl-k">Point</span>[] lessPoints <span class="pl-k">=</span> simplify<span class="pl-k">.</span>simplify(allPoints, tolerance, highQuality);</pre></div>
+
+<p><strong>Please note</strong>
+The algorithm squares differences of x, y and z coordinates. If this difference is less than 1,
+the square of it will get even less. In such cases, the tolerance has negative effect.</p>
+
+<p>Solution: multiply your coordinates by a factor so the values are shifted in a way so that taking
+the square of the differences creates greater values.</p>
+
+<p>If your Points don't have the <code>com.goebl.simplify.Point</code> interface, you can implement it on your
+Point-Class, or (better w.r.t. separation of concerns) provide an implementation of the
+<code>PointExtractor</code> interface.</p>
+
+<p>Here is an example (taken from the test cases):</p>
+
+<p>Example for your own point-class, let's assume it's not possible/desirable to
+let it implement com.goebl.simplify.Point interface: </p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">LatLng</span> {
+    <span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-k">double</span> lat;
+    <span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-k">double</span> lng;
+
+    <span class="pl-k">public</span> <span class="pl-en">LatLng</span>(<span class="pl-k">double</span> <span class="pl-v">lat</span>, <span class="pl-k">double</span> <span class="pl-v">lng</span>) {
+        <span class="pl-v">this</span><span class="pl-k">.</span>lat <span class="pl-k">=</span> lat;
+        <span class="pl-v">this</span><span class="pl-k">.</span>lng <span class="pl-k">=</span> lng;
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">double</span> <span class="pl-en">getLat</span>() {
+        <span class="pl-k">return</span> lat;
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">double</span> <span class="pl-en">getLng</span>() {
+        <span class="pl-k">return</span> lng;
+    }
+}</pre></div>
+
+<p>In the class where you simplify the points, you need a <strong>PointExtractor</strong>. As mentioned above,
+the resulting x and y values are shifted in a space where delta-x and delta-y are no longer very
+small numbers below 1:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-k">PointExtractor&lt;<span class="pl-smi">LatLng</span>&gt;</span> latLngPointExtractor <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">PointExtractor&lt;<span class="pl-smi">LatLng</span>&gt;</span>() {
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">double</span> <span class="pl-en">getX</span>(<span class="pl-smi">LatLng</span> <span class="pl-v">point</span>) {
+        <span class="pl-k">return</span> point<span class="pl-k">.</span>getLat() <span class="pl-k">*</span> <span class="pl-c1">1000000</span>;
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">double</span> <span class="pl-en">getY</span>(<span class="pl-smi">LatLng</span> <span class="pl-v">point</span>) {
+        <span class="pl-k">return</span> point<span class="pl-k">.</span>getLng() <span class="pl-k">*</span> <span class="pl-c1">1000000</span>;
+    }
+};</pre></div>
+
+<p>Simplification now works like this. Using a <code>PointExtractor</code> has the positive effect that you get
+an array of your original points, not copies:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">LatLng</span>[] coords <span class="pl-k">=</span> <span class="pl-c1">...</span> <span class="pl-c">// the array of your "original" points</span>
+
+<span class="pl-k">Simplify&lt;<span class="pl-smi">LatLng</span>&gt;</span> simplify <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">Simplify&lt;<span class="pl-smi">LatLng</span>&gt;</span>(<span class="pl-k">new</span> <span class="pl-smi">LatLng</span>[<span class="pl-c1">0</span>], latLngPointExtractor);
+
+<span class="pl-k">LatLng</span>[] simplified <span class="pl-k">=</span> simplify<span class="pl-k">.</span>simplify(coords, <span class="pl-c1">20f</span>, <span class="pl-c1">false</span>);</pre></div>
+
+<p>For more examples see src/test/java/*<em>/</em>Test.</p>
+
+<h1>
+<a id="maven-coordinates" class="anchor" href="#maven-coordinates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven Coordinates</h1>
+
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
+    &lt;<span class="pl-ent">groupId</span>&gt;com.goebl&lt;/<span class="pl-ent">groupId</span>&gt;
+    &lt;<span class="pl-ent">artifactId</span>&gt;simplify&lt;/<span class="pl-ent">artifactId</span>&gt;
+    &lt;<span class="pl-ent">version</span>&gt;1.0.0&lt;/<span class="pl-ent">version</span>&gt;
+
+    <span class="pl-c">&lt;!-- or --&gt;</span>
+
+    &lt;<span class="pl-ent">groupId</span>&gt;com.goebl&lt;/<span class="pl-ent">groupId</span>&gt;
+    &lt;<span class="pl-ent">artifactId</span>&gt;simplify&lt;/<span class="pl-ent">artifactId</span>&gt;
+    &lt;<span class="pl-ent">version</span>&gt;1.0.1-SNAPSHOT&lt;/<span class="pl-ent">version</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
 
 <p>Gradle</p>
 
@@ -94,18 +159,24 @@ polyline simplification library by Vladimir Agafonkin</li>
 <ul>
 <li><a href="https://oss.sonatype.org/content/groups/staging/com/goebl/simplify/">SNAPSHOT Versions</a></li>
 <li><a href="http://repo.maven.apache.org/maven2/com/goebl/simplify/">RELEASE Versions</a></li>
-</ul><h1>
-<a name="licence" class="anchor" href="#licence"><span class="octicon octicon-link"></span></a>Licence</h1>
+</ul>
+
+<h1>
+<a id="licence" class="anchor" href="#licence" aria-hidden="true"><span class="octicon octicon-link"></span></a>Licence</h1>
 
 <ul>
 <li><a href="http://opensource.org/licenses/MIT">The MIT License</a></li>
-</ul><h1>
-<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h1>
+</ul>
+
+<h1>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h1>
 
 <ul>
 <li>publish gh_pages (JavaDoc)</li>
-</ul><h1>
-<a name="alternatives--infos" class="anchor" href="#alternatives--infos"><span class="octicon octicon-link"></span></a>Alternatives / Infos</h1>
+</ul>
+
+<h1>
+<a id="alternatives--infos" class="anchor" href="#alternatives--infos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Alternatives / Infos</h1>
 
 <ul>
 <li><a href="http://www.codeproject.com/Articles/114797/Polyline-Simplification">http://www.codeproject.com/Articles/114797/Polyline-Simplification</a></li>
@@ -117,7 +188,7 @@ polyline simplification library by Vladimir Agafonkin</li>
     <div id="footer_wrap" class="outer">
       <footer class="inner">
         <p class="copyright">simplify-java maintained by <a href="https://github.com/hgoebl">hgoebl</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
