@@ -111,9 +111,10 @@ public class SimplifyTest {
         List<MyPoint> pointList = new ArrayList<MyPoint>();
         File file = new File("src/test/resources", fileName);
         InputStream is = null;
+        BufferedReader reader = null;
         try {
             is = new FileInputStream(file);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().length() == 0) {
@@ -125,6 +126,9 @@ public class SimplifyTest {
                 pointList.add(new MyPoint(x, y));
             }
         } finally {
+            if (reader != null) {
+                reader.close();
+            }
             if (is != null) {
                 is.close();
             }

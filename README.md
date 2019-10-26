@@ -12,7 +12,7 @@ Simplification of a 2D-polyline or a 3D-polyline.
   * requires Java 5
   * Maven Build
   * JUnit-tested
-    * 94% lines covered
+    * 100% lines covered
     * reference data is created by "original" JavaScript implementation (Version 1.1.0)
 
 # Example #

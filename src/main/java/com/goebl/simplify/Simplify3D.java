@@ -65,7 +65,7 @@ public class Simplify3D<T> extends AbstractSimplify<T> {
 
     @Override
     public double getSquareSegmentDistance(T p0, T p1, T p2) {
-        double x0, y0, z0, x1, y1, z1, x2, y2, z2, dx, dy, dz, t;
+        double x0, y0, z0, x1, y1, z1, x2, y2, z2;
 
         x1 = pointExtractor.getX(p1);
         y1 = pointExtractor.getY(p1);
@@ -77,14 +77,20 @@ public class Simplify3D<T> extends AbstractSimplify<T> {
         y0 = pointExtractor.getY(p0);
         z0 = pointExtractor.getZ(p0);
 
-        dx = x2 - x1;
-        dy = y2 - y1;
-        dz = z2 - z1;
+        return calculateSquareSegmentDistance(x0, y0, z0, x1, y1, z1, x2, y2, z2);
+    }
+
+    static double calculateSquareSegmentDistance(
+            double x0, double y0, double z0,
+            double x1, double y1, double z1,
+            double x2, double y2, double z2) {
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double dz = z2 - z1;
 
         if (dx != 0.0d || dy != 0.0d || dz != 0.0d) {
-            t = ((x0 - x1) * dx + (y0 - y1) * dy + (z0 - z1) * dz)
+            double t = ((x0 - x1) * dx + (y0 - y1) * dy + (z0 - z1) * dz)
                     / (dx * dx + dy * dy + dz * dz);
-
             if (t > 1.0d) {
                 x1 = x2;
                 y1 = y2;
