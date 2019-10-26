@@ -14,6 +14,7 @@ public class Simplify3DTest {
     private static final float[][] POINTS_3D = new float[][]{
             {3.14f, 5.2f, 4f}, {5.7f, 8.1f, 5f}, {4.6f, -1.3f, 6f}
     };
+    private static final double DELTA = 0.00001d;
 
     @Test
     public void testCustomPoint3DExtractor() {
@@ -57,6 +58,20 @@ public class Simplify3DTest {
 
         simplified = simplify3D.simplify(points, 5.0d, true);
         Assert.assertEquals("array should be simplified", 2, simplified.length);
+    }
+
+    @Test
+    public void testCalculateSquareSegmentDistance() {
+        double res = Simplify3D.calculateSquareSegmentDistance(
+                2, 1, 1,
+                1, 1, 1,
+                3, 3, 1);
+        Assert.assertEquals(0.5d, res, DELTA);
+        double resBis = Simplify3D.calculateSquareSegmentDistance(
+                -0.1, -0.2, -0.3,
+                -0.7, -0.8, -0.9,
+                -0.4, -0.5, -0.6);
+        Assert.assertEquals(0.27d, resBis, DELTA);
     }
 
     private static class MyPoint implements Point3D {
