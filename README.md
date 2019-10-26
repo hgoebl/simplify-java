@@ -9,7 +9,7 @@ Simplification of a 2D-polyline or a 3D-polyline.
     * either by implementing an interface
     * or by providing a helper extracting the coordinates
   * Leaves the objects untouched, just creates a new array referencing the simplified points
-  * requires Java 5
+  * requires Java 8
   * Maven Build
   * JUnit-tested
     * 94% lines covered
